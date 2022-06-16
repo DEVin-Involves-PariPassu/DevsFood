@@ -8,10 +8,14 @@ background-color: #FF0000;
 
 export const Menu = styled.div`
 display:flex;
-background-color: #00FF00;
-width: 80px`;
+justify-content: center;
+align-items: center;
+background-color: #CDCCCC;
+width: 80px;
+flex-direction: column;
+`;
 
 export const PageBody = styled.div`
 display:flex;
-background-color: #0000FF;
+background-color: #AECEAF;
 flex: 1`;
