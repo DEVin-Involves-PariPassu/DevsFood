@@ -10,7 +10,7 @@ export const Menu = styled.div`
 display:flex;
 justify-content: center;
 align-items: center;
-background-color: #CDCCCC;
+background-color: #2C509F;
 width: 80px;
 flex-direction: column;
 `;
@@ -18,4 +18,6 @@ flex-direction: column;
 export const PageBody = styled.div`
 display:flex;
 background-color: #AECEAF;
-flex: 1`;
+flex: 1;
+overflow-y: auto;`
+;
