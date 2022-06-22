@@ -5,7 +5,9 @@ import {
     CategoryArea, 
     CategoryList, 
     ProductArea,
-    ProductList
+    ProductList,
+    ProductPaginationArea,
+    ProductPaginationItem
 } from './styled';
 
 import api from '../../api';
@@ -14,21 +16,39 @@ import Header from '../../components/Header';
 import CategoryItem from '../../components/CategoryItem';
 import ReactTooltip from 'react-tooltip';
 import ProductItem from '../../components/ProductItem';
+import Modal from '../../components/Modal';
+
+
+let searchTime = null;
 
 export default () => {
     const history = useHistory();
+
     const [headerSearch, setHeaderSearch] = useState('');
     const [categories, setCategories] = useState([]);
     const [products, setProducts] = useState([]);
+    const [totalPages, setTotalPages] = useState(0);
 
     const [activeCategory, setActiveCategory] = useState(0);
+    const [activePage, setActivePage] = useState(1);
+    const [activeSearch, setActiveSearch] = useState('');
 
     const getProducts = async () => {
-        const prods = await api.getProducts();
+        const prods = await api.getProducts(activeCategory, activePage, activeSearch);
         if(prods.error == '') {
             setProducts(prods.result.data);
+            setTotalPages(prods.result.pages);
+            setActivePage(prods.result.page);
         }
     }
+
+    useEffect(()=>{
+        clearTimeout(searchTime);
+        searchTime = setTimeout(()=>{
+                setActiveSearch(headerSearch);            
+        }, 2000)
+    }, [headerSearch]);
+    
 
     useEffect(()=>{
         const getCategories = async () => {
@@ -42,8 +62,9 @@ export default () => {
     }, []);
 
     useEffect(()=>{
+        setProducts([]);
         getProducts();
-    }, [activeCategory]);
+    }, [activeCategory, activePage, activeSearch]);
 
 
     return (
@@ -85,6 +106,22 @@ export default () => {
                 </ProductList>
            </ProductArea>
            }
+
+           {totalPages > 0 &&
+                <ProductPaginationArea>
+                    {Array(totalPages).fill(0).map((item, index)=>
+                    <ProductPaginationItem 
+                    key={index} 
+                    active={activePage}
+                    current={index + 1}
+                    onClick={()=>setActivePage(index+1)}>
+                        {index + 1}
+                    </ProductPaginationItem>)}
+                </ProductPaginationArea>           
+           }
+           <Modal>
+            Conteúdo do Modal
+           </Modal>
         </Container>
     );
 }
