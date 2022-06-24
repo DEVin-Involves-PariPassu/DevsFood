@@ -1,10 +1,20 @@
 import React from "react";
-import { Container } from "./styled";
+import { Container, ModalBody} from "./styled";
 
-export default () => {
+export default ({status, setStatus, children}) => {
+    const handleModalClick = (e) => {
+        if(e.target.classList.contains('modalBg'))
+        setStatus(false);
+    }
+
     return (
-        <Container>
-            
+        <Container 
+        className="modalBg"
+        status={status} 
+        onClick={handleModalClick}>
+            <ModalBody>
+                {children}
+            </ModalBody>
         </Container>
     )
 }
