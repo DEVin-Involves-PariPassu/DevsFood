@@ -17,6 +17,7 @@ import CategoryItem from '../../components/CategoryItem';
 import ReactTooltip from 'react-tooltip';
 import ProductItem from '../../components/ProductItem';
 import Modal from '../../components/Modal';
+import ModalProduct from '../../components/ModalProduct';
 
 
 let searchTime = null;
@@ -122,7 +123,7 @@ export default () => {
                 </ProductPaginationArea>           
            }
            <Modal status={modalStatus} setStatus={setModalStatus}>
-            Conteúdo do Modal
+                <ModalProduct />
            </Modal>
         </Container>
     );
