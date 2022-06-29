@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react";
+import { useDispatch } from 'react-redux'
 import { Container,
     ProductArea,
     ProductButtons,
@@ -16,6 +17,8 @@ import { Container,
 } from "./styled";
 
 export default ({ data, setStatus }) => {
+    const dispach= useDispatch();
+
     const [qt, setQt] = useState(1);
 
     useEffect(()=>{
@@ -25,13 +28,23 @@ export default ({ data, setStatus }) => {
     const handleCancelButton = () => {
         setStatus(false);
     }
-    const handleMinusQt = () =>{
+    const handleMinusQt = () => {
         if(qt > 1){
             setQt(qt - 1);
         }
     }
-    const handlePlusQt= () =>{
+    const handlePlusQt = () => {
         setQt(qt + 1);
+    }
+
+    const handleAddToCart = () => {
+
+        dispach({
+            type: 'ADD_PRODUCT',
+            payload:{ data, qt }
+        })
+
+        setStatus(false);
     }
 
     return (
@@ -46,11 +59,11 @@ export default ({ data, setStatus }) => {
                     </ProductDetails>
                     <ProductQuantityArea>
                         <ProductQuantity>
-                            <ProductQtImage src="/assets/minus.png" onClick={handleMinusQt}></ProductQtImage>
+                            <ProductQtImage onClick={handleMinusQt} src="/assets/minus.png" ></ProductQtImage>
                             <ProductQtText>{qt}</ProductQtText>
-                            <ProductQtImage src="/assets/plus.png" onClick={handlePlusQt}></ProductQtImage>
+                            <ProductQtImage onClick={handlePlusQt} src="/assets/plus.png"></ProductQtImage>
                         </ProductQuantity>
-                        <ProductPrice>R$ {data.price * qt}</ProductPrice>
+                        <ProductPrice>R$ {(data.price * qt).toFixed(2)}</ProductPrice>
                     </ProductQuantityArea>
                 </ProductInfoArea>
 
@@ -58,7 +71,7 @@ export default ({ data, setStatus }) => {
             </ProductArea>
             <ProductButtons>
                 <ProductButton small={true} onClick={handleCancelButton}>Cancelar </ProductButton>
-                <ProductButton>Adicionar ao Carrinho</ProductButton>
+                <ProductButton onClick={handleAddToCart}>Adicionar ao Carrinho</ProductButton>
             </ProductButtons>
         </Container>
     );
